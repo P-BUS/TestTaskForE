@@ -1,8 +1,10 @@
 package com.example.testtaskfore.data.repository
 
+import android.util.Log
 import com.example.testtaskfore.data.database.AppDatabase
+import com.example.testtaskfore.data.model.ApiResult
 import com.example.testtaskfore.data.model.UnsplashPhoto
-import com.example.testtaskfore.data.network.PhotoApiService
+import com.example.testtaskfore.data.network.PhotoRemoteDataSource
 import com.example.testtaskfore.utils.asDatabaseModel
 import com.example.testtaskfore.utils.asDomainModel
 import kotlinx.coroutines.Dispatchers
@@ -12,9 +14,11 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+const val TAG = "PhotosRepository"
+
 @Singleton
 class PhotosRepository @Inject constructor(
-    private val network: PhotoApiService,
+    private val network: PhotoRemoteDataSource,
     private val database: AppDatabase
 ) {
 
@@ -29,8 +33,12 @@ class PhotosRepository @Inject constructor(
     suspend fun refreshPhotos() {
         withContext(Dispatchers.IO) {
             // Retrieve photos from network
-            // TODO: to add safe response handling if will be time
-            val listPhotos: List<UnsplashPhoto> = network.getPhotos()
+            var listPhotos: List<UnsplashPhoto> = listOf()
+            when (val response = network.getPhotos()) {
+                is ApiResult.Success -> listPhotos = response.data
+                is ApiResult.Error -> Log.e(TAG, "${response.code} ${response.message}")
+                is ApiResult.Exception -> Log.e(TAG, "${response.e.message}")
+            }
             // Update database
             database.photosDao().insertAll(listPhotos.asDatabaseModel())
         }
@@ -39,8 +47,12 @@ class PhotosRepository @Inject constructor(
     suspend fun refreshSearchPhotos(searchQuery: String) {
         withContext(Dispatchers.IO) {
             // Retrieve search photos from network
-            // TODO: to add safe response handling if will be time
-            val listSearchPhotos: List<UnsplashPhoto> = network.getSearchPhotos(searchQuery).results
+            var listSearchPhotos: List<UnsplashPhoto> = listOf()
+            when (val response = network.getSearchPhotos(searchQuery)) {
+                is ApiResult.Success -> listSearchPhotos = response.data.results
+                is ApiResult.Error -> Log.e(TAG, "${response.code} ${response.message}")
+                is ApiResult.Exception -> Log.e(TAG, "${response.e.message}")
+            }
             // Update database if the search result is success
             if (listSearchPhotos.isNotEmpty()) {
                 database.photosDao().apply {

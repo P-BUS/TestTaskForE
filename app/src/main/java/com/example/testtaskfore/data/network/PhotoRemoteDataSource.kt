@@ -14,8 +14,8 @@ class PhotoRemoteDataSource @Inject constructor(
             photoApiService.getPhotos()
         }
 
-    suspend fun getSearchPhotos(): ApiResult<PhotoResponse> =
+    suspend fun getSearchPhotos(searchQuery: String): ApiResult<PhotoResponse> =
         handleApiResponse {
-            photoApiService.getSearchPhotos()
+            photoApiService.getSearchPhotos(searchQuery)
         }
 }
