@@ -1,7 +1,7 @@
 package com.example.testtaskfore.data.repository
 
 import android.util.Log
-import com.example.testtaskfore.data.database.AppDatabase
+import com.example.testtaskfore.data.database.PhotoLocalDataSource
 import com.example.testtaskfore.data.model.ApiResult
 import com.example.testtaskfore.data.model.UnsplashPhoto
 import com.example.testtaskfore.data.network.PhotoRemoteDataSource
@@ -19,15 +19,15 @@ const val TAG = "PhotosRepository"
 @Singleton
 class PhotosRepository @Inject constructor(
     private val network: PhotoRemoteDataSource,
-    private val database: AppDatabase
+    private val database: PhotoLocalDataSource
 ) {
 
     val photos: Flow<List<UnsplashPhoto>> =
-        database.photosDao().getAllPhotos()
+        database.getAllPhotos()
             .map { it.asDomainModel() }
 
     val favoriteFhotos: Flow<List<UnsplashPhoto>> =
-        database.photosDao().getAllFavoritePhotos(true)
+        database.getAllFavoritePhotos(true)
             .map { it.asDomainModel() }
 
     suspend fun refreshPhotos() {
@@ -40,7 +40,7 @@ class PhotosRepository @Inject constructor(
                 is ApiResult.Exception -> Log.e(TAG, "${response.e.message}")
             }
             // Update database
-            database.photosDao().insertAll(listPhotos.asDatabaseModel())
+            database.insertAll(listPhotos.asDatabaseModel())
         }
     }
 
@@ -55,7 +55,7 @@ class PhotosRepository @Inject constructor(
             }
             // Update database if the search result is success
             if (listSearchPhotos.isNotEmpty()) {
-                database.photosDao().apply {
+                database.apply {
                     deleteAllPhotos()
                     insertAll(listSearchPhotos.asDatabaseModel())
                 }
@@ -65,7 +65,7 @@ class PhotosRepository @Inject constructor(
 
     suspend fun saveLikesInDatabase(id: String, isLiked: Boolean) {
         withContext(Dispatchers.IO) {
-            database.photosDao().saveLikesInDatabase(id, isLiked)
+            database.saveLikesInDatabase(id, isLiked)
         }
     }
 }
