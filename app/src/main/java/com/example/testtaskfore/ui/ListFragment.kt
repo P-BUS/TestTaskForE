@@ -100,7 +100,11 @@ class ListFragment : Fragment() {
                             sharedViewModel.updateSearchQuery(query)
                             sharedViewModel.refreshSearchPhotos(query)
                         } else {
-                            SnackbarsUtils.showSnackbar(binding.root, R.string.snackbar_favorite, Snackbar.LENGTH_SHORT)
+                            SnackbarsUtils.showSnackbar(
+                                binding.root,
+                                R.string.snackbar_favorite,
+                                Snackbar.LENGTH_SHORT
+                            )
                         }
                         return true
                     }
