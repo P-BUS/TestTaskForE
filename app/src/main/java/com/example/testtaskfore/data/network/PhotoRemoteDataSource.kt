@@ -8,6 +8,7 @@ import javax.inject.Inject
 class PhotoRemoteDataSource @Inject constructor(
     private val photoApiService: PhotoApiService
 ) {
+
     suspend fun getPhotos(): ApiResult<List<UnsplashPhoto>> =
         handleApiResponse {
             photoApiService.getPhotos()
