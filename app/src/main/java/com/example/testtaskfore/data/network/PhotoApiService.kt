@@ -2,6 +2,7 @@ package com.example.testtaskfore.data.network
 
 import com.example.testtaskfore.data.model.PhotoResponse
 import com.example.testtaskfore.data.model.UnsplashPhoto
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,16 +13,16 @@ interface PhotoApiService {
         @Query("page") pageNumber: Int = 3,
         @Query("per_page") itemsPerPage: Int = 30,
         @Query("order_by") sort: String = "popular"
-    ): List<UnsplashPhoto>
+    ): Response<List<UnsplashPhoto>>
 
     @GET(SEARCH_ENDPOINT)
     suspend fun getSearchPhotos(
-        @Query("query") searchQuery: String,
+        @Query("query") searchQuery: String = "space",
         @Query("client_id") clientId: String = ACCESS_KEY,
         @Query("page") pageNumber: Int = 3,
         @Query("per_page") itemsPerPage: Int = 30,
         @Query("order_by") sort: String = "popular"
-    ): PhotoResponse
+    ): Response<PhotoResponse>
 
 
     companion object {
