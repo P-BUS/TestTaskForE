@@ -1,6 +1,5 @@
 package com.example.testtaskfore.data.network
 
-import com.example.testtaskfore.data.model.ApiResult
 import retrofit2.HttpException
 import retrofit2.Response
 

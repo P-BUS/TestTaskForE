@@ -2,7 +2,7 @@ package com.example.testtaskfore.data.repository
 
 import android.util.Log
 import com.example.testtaskfore.data.database.PhotoLocalDataSource
-import com.example.testtaskfore.data.model.ApiResult
+import com.example.testtaskfore.data.network.ApiResult
 import com.example.testtaskfore.data.model.UnsplashPhoto
 import com.example.testtaskfore.data.network.PhotoRemoteDataSource
 import com.example.testtaskfore.utils.asDatabaseModel

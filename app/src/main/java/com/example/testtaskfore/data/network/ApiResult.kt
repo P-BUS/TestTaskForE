@@ -1,4 +1,4 @@
-package com.example.testtaskfore.data.model
+package com.example.testtaskfore.data.network
 
 sealed class ApiResult<T : Any> {
     data class Success<T : Any>(val data: T) : ApiResult<T>()
