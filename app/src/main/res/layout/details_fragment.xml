@@ -54,8 +54,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_medium"
-        android:textAllCaps="true"
         android:layout_marginTop="@dimen/margin_medium"
+        android:textAllCaps="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_image_description"
         tools:text="Anrew McCalister" />
@@ -74,10 +74,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_medium"
+        android:text="@string/likes_quantity"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_created_date"
-        android:text="@string/likes_quantity"
         tools:text="12 Likes" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
